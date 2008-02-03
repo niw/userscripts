@@ -83,7 +83,7 @@ try {
 		});
 	});
 	document.body.addEventListener("keydown", function(e) {
-		document.body.appendChild(document.createTextNode(e.keyCode));
+		// press Ctrl+F to switch filter field
 		if(e.ctrlKey && e.keyCode == 70) {
 			inputs.each(function(input) {
 				input.style.display = (input.style.display == "none") ? "" : "none";
