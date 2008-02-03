@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name           onpuchan reveal abbreviated comments
+// @name           Onpuchan Reveal Abbreviated Comments
 // @namespace      http://niw.at/
-// @description    reveal abbreviated comments
+// @description    Reveal abbreviated comments on Onpuchan BBS
 // @include        http://rail.uploader.dyndns.org/*
 // ==/UserScript==
 
