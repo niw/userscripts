@@ -2,9 +2,9 @@
 // @name           Google Language Code Selector
 // @namespace      http://niw.at/
 // @description    Select hl paramter for google query
-// @include        http://*.google.*/*q=*
-// @include        http://*.google.*/
-// @include        http://*.google.*/webhp*
+// @include        http://www.google.*/*q=*
+// @include        http://www.google.*/
+// @include        http://www.google.*/webhp*
 // ==/UserScript==
 
 (function() {
