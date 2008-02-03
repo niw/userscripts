@@ -3,6 +3,7 @@
 // @namespace      http://niw.at/
 // @description    Filtering the list elements
 // @include        *
+// @exclude        *.google.*/*
 // ==/UserScript==
 
 (function() {
