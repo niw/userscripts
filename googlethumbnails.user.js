@@ -23,12 +23,6 @@
 		}
 		return result;
 	}
-	function error_span(msg) {
-		var span = document.createElement("span");
-		span.setAttribute("style", "background: #c00; color: #fff; font-size: 10px; padding: 3px; border: 1px solid #fff;");
-		span.appendChild(document.createTextNode(msg));
-		return span;
-	}
 	xpath("//*[(name() = 'div' and @class='g') or (name() = 'h3' and @class='sem')]", document).each(function(result) {
 		var result_link = xpath("./h2/a", result)[0];
 		if(result_link) {
