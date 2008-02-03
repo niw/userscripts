@@ -45,6 +45,9 @@ try {
 			option.appendChild(document.createTextNode(langs[key]));
 			select.appendChild(option);
 		}
+		select.onchange = function() {
+			this.form.submit();
+		}
 		return select;
 	}
 	function current_lang() {
