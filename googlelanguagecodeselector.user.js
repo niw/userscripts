@@ -14,6 +14,13 @@ try {
 			f(this[i]);
 		}
 	}
+	Object.prototype.each = function(f) {
+		for(var key in this) {
+			if(!(this[key] && this[key] == this.__proto__[key])) {
+				f(key, this[key]);
+			}
+		}
+	}
 	HTMLElement.prototype.insertNext = function(a) {
 		this.parentNode.insertBefore(a, this.nextSibling);
 	}
@@ -36,15 +43,15 @@ try {
 		var langs = {"en": "English", "ja": "Japanese"};
 		var select = document.createElement("select");
 		select.setAttribute("name", "hl");
-		for(var key in langs) {
+		langs.each(function(key, lang) {
 			var option = document.createElement("option");
 			option.setAttribute("value", key);
 			if(key == selected) {
 				option.setAttribute("selected", "");
 			}
-			option.appendChild(document.createTextNode(langs[key]));
+			option.appendChild(document.createTextNode(lang));
 			select.appendChild(option);
-		}
+		});
 		select.onchange = function() {
 			this.form.submit();
 		}
