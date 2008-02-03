@@ -75,7 +75,7 @@ try {
 				fontSize = "8px";
 				border = "1px solid #ddd";
 				margin = "2px";
-				//display = "none";
+				display = "none";
 			}
 			input.addEventListener("search", dofilter(listtag, childtagnames), true);
 			listtag.parentNode.insertBefore(input, listtag);
