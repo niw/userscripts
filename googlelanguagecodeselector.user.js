@@ -13,7 +13,7 @@
 			f(this[i]);
 		}
 	}
-	HTMLElement.prototype.insertAfter = function(a) {
+	HTMLElement.prototype.insertNext = function(a) {
 		this.parentNode.insertBefore(a, this.nextSibling);
 	}
 	function xpath(xpath, context) {
@@ -62,7 +62,7 @@
 				table.parentNode.removeChild(table);
 				form.appendChild(table);
 			} else {
-				form.insertAfter(error_span("Language Selector: Google might change the DOM layout!"));
+				form.insertNext(error_span("Language Selector: Google might change the DOM layout!"));
 			}
 		}
 		var q = xpath(".//input[@name='q']", form);
@@ -71,8 +71,8 @@
 				a.parentNode.removeChild(a);
 			});
 			q.each(function(a) {
-				a.insertAfter(lang_select(current_lang()));
-				a.insertAfter(document.createTextNode(" "));
+				a.insertNext(lang_select(current_lang()));
+				a.insertNext(document.createTextNode(" "));
 				modif = true;
 			});
 		}
