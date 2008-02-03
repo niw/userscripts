@@ -7,6 +7,7 @@
 // ==/UserScript==
 
 (function () {
+try {
 	Array.prototype.each = function(f) {
 		for(var i = 0; i < this.length; i++) {
 			f(this[i]);
@@ -37,4 +38,10 @@
 			result_link.insertNext(thumbnail);
 		}
 	});
+} catch(exception) {
+	var tag = document.createElement("div");
+	tag.setAttribute("style", "padding: 4px; font-size: 10px; color: #fff; border: 1px solid #f00; background: #c00;");
+	tag.appendChild(document.createTextNode(exception));
+	document.body.insertBefore(tag, document.body.firstChild);
+}
 })();

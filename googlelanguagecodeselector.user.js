@@ -8,6 +8,7 @@
 // ==/UserScript==
 
 (function() {
+try {
 	Array.prototype.each = function(f) {
 		for(var i = 0; i < this.length; i++) {
 			f(this[i]);
@@ -30,6 +31,7 @@
 		span.appendChild(document.createTextNode(msg));
 		return span;
 	}
+
 	function lang_select(selected) {
 		var langs = {"en": "English", "ja": "Japanese"};
 		var select = document.createElement("select");
@@ -49,7 +51,6 @@
 		document.location.href.replace(/lr=lang_[^&]+&?/, '').replace(/hl=([^&]+)&?/, '');
 		return (RegExp.$1) ? RegExp.$1 : "en";
 	}
-
 	xpath("//form", document).each(function(form) {
 		// NOTE Current google result page was invalid HTML around form tag
 		// We should fix it to add the select tag.
@@ -77,4 +78,10 @@
 			});
 		}
 	});
+} catch(exception) {
+	var tag = document.createElement("div");
+	tag.setAttribute("style", "padding: 4px; font-size: 10px; color: #fff; border: 1px solid #f00; background: #c00;");
+	tag.appendChild(document.createTextNode(exception));
+	document.body.insertBefore(tag, document.body.firstChild);
+}
 })();
