@@ -5,6 +5,7 @@
 // @include        http://www.google.*/*q=*
 // @include        http://www.google.*/
 // @include        http://www.google.*/webhp*
+// @exclude        http://www.google.*/reader*
 // ==/UserScript==
 
 (function() {
