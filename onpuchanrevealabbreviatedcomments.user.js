@@ -69,7 +69,7 @@ try {
 		if(link && abbreviate) {
 			var href = link.getAttribute("href");
 			var anchor = document.createElement("a");
-			anchor.setAttribute("style", "cursor: hand; font-size: 10px; padding: 4px; border: 1px solid #fff; background: #7000A0;");
+			anchor.setAttribute("style", "cursor: hand; font-size: 10px; color: #fff; padding: 4px; border: 1px solid #00f; background: #36c;");
 			anchor.onclick = function() {
 				anchor.onclick = undefined;
 				anchor.innerText = "Loading...";
