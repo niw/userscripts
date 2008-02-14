@@ -8,22 +8,22 @@
 
 (function() {
 try {
-	Array.prototype.each = function(f) {
-		for(var i = 0; i < this.length; i++) {
-			f(this[i]);
+	function array_each(a, f) {
+		for(var i = 0; i < a.length; i++) {
+			f(a[i]);
 		}
 	}
-	Array.prototype.map = function(f) {
+	function array_map(a, f) {
 		var result = []; //new Array(this.length);
-		for(var i = 0; i < this.length; i++) {
-			result[i] = f(this[i]);
+		for(var i = 0; i < a.length; i++) {
+			result[i] = f(a[i]);
 		}
 		return result;
 	}
-	Object.prototype.each = function(f) {
-		for(var key in this) {
-			if(!(this[key] && this[key] == this.__proto__[key])) {
-				f(key, this[key]);
+	function hash_each(o, f) {
+		for(var key in o) {
+			if(!(o[key] && o[key] == o.__proto__[key])) {
+				f(key, o[key]);
 			}
 		}
 	}
@@ -39,8 +39,7 @@ try {
 	function dofilter(listtag, childtagnames) {
 		return function(e) {
 			var terms = this.value.split(" ");
-			var collection = xpath(".//*[" + childtagnames.map(function(a){ return "(name() = '" + a + "')" }).join(" or ") + "]", listtag);
-			collection.each(function(node) {
+			array_each(xpath(".//*[" + array_map(childtagnames, function(a){ return "(name() = '" + a + "')" }).join(" or ") + "]", listtag), function(node) {
 				var display = "";
 				var innerText = node.innerHTML.replace(/<[^>]+>/g, "");
 				for (var i = 0; i < terms.length; i++) {
@@ -64,8 +63,8 @@ try {
 		"dl": ["dt", "dd"]
 	}
 	var inputs = [];
-	listtags.each(function(tagname, childtagnames) {
-		xpath("//" + tagname + "[" + childtagnames.map(function(a){ return "(count(.//" + a + ") > 10)" }).join(" or ") + "]", document).each(function(listtag) {
+	hash_each(listtags, function(tagname, childtagnames) {
+		array_each(xpath("//" + tagname + "[" + array_map(childtagnames, function(a){ return "(count(.//" + a + ") > 10)" }).join(" or ") + "]", document), function(listtag) {
 			var input = document.createElement('INPUT');
 			input.setAttribute("type", "search");
 			input.setAttribute("placeholder", "Filter");
@@ -86,7 +85,7 @@ try {
 	document.body.addEventListener("keydown", function(e) {
 		// press Ctrl+F to switch filter field
 		if(e.ctrlKey && e.keyCode == 70) {
-			inputs.each(function(input) {
+			array_each(inputs, function(input) {
 				input.style.display = (input.style.display == "none") ? "" : "none";
 			});
 		}

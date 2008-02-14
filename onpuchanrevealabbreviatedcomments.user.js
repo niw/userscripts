@@ -7,13 +7,13 @@
 
 (function() {
 try {
-	Array.prototype.each = function(f) {
-		for(var i = 0; i < this.length; i++) {
-			f(this[i]);
+	function array_each(a, f) {
+		for(var i = 0; i < a.length; i++) {
+			f(a[i]);
 		}
 	}
-	HTMLElement.prototype.insertNext = function(a) {
-		this.parentNode.insertBefore(a, this.nextSibling);
+	function insertNext(h, a) {
+		h.parentNode.insertBefore(a, h.nextSibling);
 	}
 	function xpath(xpath, context) {
 		var result = [];
@@ -52,7 +52,7 @@ try {
 				continue
 			}
 			var tag = document.createElement("div");
-			elements.each(function(a) {
+			array_each(elements, function(a) {
 				a.parentNode.removeChild(a);
 				tag.appendChild(a);
 			});
@@ -60,7 +60,7 @@ try {
 		}
 		return topics;
 	}
-	onpuchan_topics(document).each(function(topic) {
+	array_each(onpuchan_topics(document), function(topic) {
 		var placepoint = topic[0];
 		var tag = topic[1];
 
@@ -76,16 +76,16 @@ try {
 				xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 					var html = document.createElement("div");
 					html.innerHTML = http.responseText;
-					onpuchan_topics(html).each(function(t) {
+					array_each(onpuchan_topics(html), function(t) {
 						tag.parentNode.removeChild(tag);
-						placepoint.insertNext(t[1]);
+						insertNext(placepoint, t[1]);
 					});
 				}});
 			}
 			anchor.innerText = "Load Partial";
-			abbreviate.insertNext(anchor);
+			insertNext(abbreviate, anchor);
 		}
-		placepoint.insertNext(tag);
+		insertNext(placepoint, tag);
 	});
 } catch(exception) {
 	var tag = document.createElement("div");

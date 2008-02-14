@@ -8,13 +8,13 @@
 
 (function () {
 try {
-	Array.prototype.each = function(f) {
-		for(var i = 0; i < this.length; i++) {
-			f(this[i]);
+	function array_each(a, f) {
+		for(var i = 0; i < a.length; i++) {
+			f(a[i]);
 		}
 	}
-	HTMLElement.prototype.insertNext = function(a) {
-		this.parentNode.insertBefore(a, this.nextSibling);
+	function insertNext(h, a) {
+		h.parentNode.insertBefore(a, h.nextSibling);
 	}
 	function xpath(xpath, context) {
 		var result = [];
@@ -24,7 +24,7 @@ try {
 		}
 		return result;
 	}
-	xpath("//*[(name() = 'div' and @class='g') or (name() = 'h3' and @class='sem')]", document).each(function(result) {
+	array_each(xpath("//*[(name() = 'div' and @class='g') or (name() = 'h3' and @class='sem')]", document), function(result) {
 		var result_link = xpath("./h2/a", result)[0];
 		if(result_link) {
 			result.setAttribute("style", result.getAttribute("style") + "; clear: left;");
@@ -35,7 +35,7 @@ try {
 			var thumbnail = document.createElement("div");
 			thumbnail.setAttribute("style", "float: left; margin: 0 8px 2px 0; width: 110px; height: 80px; overflow: hidden; background: #D5DDF3; border: 1px solid #3366CC;");
 			thumbnail.innerHTML = '<a href="' + result_url + '"><img src="' + thumb_url + '" align="left" height="80" width="110" /></a>';
-			result_link.insertNext(thumbnail);
+			insertNext(result_link, thumbnail);
 		}
 	});
 } catch(exception) {

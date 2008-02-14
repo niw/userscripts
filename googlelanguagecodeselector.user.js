@@ -10,20 +10,20 @@
 
 (function() {
 try {
-	Array.prototype.each = function(f) {
-		for(var i = 0; i < this.length; i++) {
-			f(this[i]);
+	function array_each(a, f) {
+		for(var i = 0; i < a.length; i++) {
+			f(a[i]);
 		}
 	}
-	Object.prototype.each = function(f) {
-		for(var key in this) {
-			if(!(this[key] && this[key] == this.__proto__[key])) {
-				f(key, this[key]);
+	function hash_each(o, f) {
+		for(var key in o) {
+			if(!(o[key] && o[key] == o.__proto__[key])) {
+				f(key, o[key]);
 			}
 		}
 	}
-	HTMLElement.prototype.insertNext = function(a) {
-		this.parentNode.insertBefore(a, this.nextSibling);
+	function insertNext(h, a) {
+		h.parentNode.insertBefore(a, h.nextSibling);
 	}
 	function xpath(xpath, context) {
 		var result = [];
@@ -44,7 +44,7 @@ try {
 		var langs = {"en": "English", "ja": "Japanese"};
 		var select = document.createElement("select");
 		select.setAttribute("name", "hl");
-		langs.each(function(key, lang) {
+		hash_each(langs, function(key, lang) {
 			var option = document.createElement("option");
 			option.setAttribute("value", key);
 			if(key == selected) {
@@ -62,7 +62,7 @@ try {
 		document.location.href.replace(/lr=lang_[^&]+&?/, '').replace(/hl=([^&]+)&?/, '');
 		return (RegExp.$1) ? RegExp.$1 : "en";
 	}
-	xpath("//form", document).each(function(form) {
+	array_each(xpath("//form", document), function(form) {
 		// NOTE Current google result page was invalid HTML around form tag
 		// We should fix it to add the select tag.
 		//if(!form.childNodes.length) {
@@ -74,17 +74,17 @@ try {
 				table.parentNode.removeChild(table);
 				form.appendChild(table);
 			} else {
-				form.insertNext(error_span("Language Selector: Google might change the DOM layout!"));
+				insertNext(form, error_span("Language Selector: Google might change the DOM layout!"));
 			}
 		}
 		var q = xpath(".//input[@name='q']", form);
 		if(q.length) {
-			xpath(".//input[@name='hl']", form).each(function(a) {
+			array_each(xpath(".//input[@name='hl']", form), function(a) {
 				a.parentNode.removeChild(a);
 			});
-			q.each(function(a) {
-				a.insertNext(lang_select(current_lang()));
-				a.insertNext(document.createTextNode(" "));
+			array_each(q, function(a) {
+				insertNext(a, lang_select(current_lang()));
+				insertNext(a, document.createTextNode(" "));
 				modif = true;
 			});
 		}
