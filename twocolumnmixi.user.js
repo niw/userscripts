@@ -20,9 +20,8 @@ try {
 		}
 		return result;
 	}
-
-	array_each(xpath("//*[(name() = 'div') and ((@id = 'bodySub') or (@class = 'adBanner'))]", document), function(element) {
-		element.style.opacity = '0.15';
+	array_each(xpath("//div[(@id = 'bodySub') or (@class = 'adBanner')]", document), function(element) {
+		element.style.display = 'none';
 	});
 } catch(exception) {
 	var tag = document.createElement("div");
