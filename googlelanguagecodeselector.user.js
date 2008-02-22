@@ -53,9 +53,9 @@ try {
 			option.appendChild(document.createTextNode(lang));
 			select.appendChild(option);
 		});
-		select.onchange = function() {
+		select.addEventListener('change', function() {
 			this.form.submit();
-		}
+		}, false);
 		return select;
 	}
 	function current_lang() {
@@ -85,7 +85,6 @@ try {
 			array_each(q, function(a) {
 				insertNext(a, lang_select(current_lang()));
 				insertNext(a, document.createTextNode(" "));
-				modif = true;
 			});
 		}
 	});
