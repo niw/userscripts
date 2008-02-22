@@ -28,7 +28,7 @@ try {
 		xmlhttp.onreadystatechange = function(){
 			if(xmlhttp.readyState == 4) {
 				if(option['onload']) {
-					(option['onload'])(xmlhttp);
+					option['onload'].call(this, xmlhttp);
 				}
 			}
 		};
@@ -70,9 +70,9 @@ try {
 			var href = link.getAttribute("href");
 			var anchor = document.createElement("a");
 			anchor.setAttribute("style", "cursor: hand; font-size: 10px; color: #fff; padding: 4px; border: 1px solid #00f; background: #36c;");
-			anchor.onclick = function() {
-				anchor.onclick = undefined;
-				anchor.innerText = "Loading...";
+			var f = function() {
+				anchor.removeEventListener("click", f, false);
+				anchor.innerHTML = "Loading...";
 				xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 					var html = document.createElement("div");
 					html.innerHTML = http.responseText;
@@ -82,7 +82,8 @@ try {
 					});
 				}});
 			}
-			anchor.innerText = "Load Partial";
+			anchor.addEventListener("click", f, false);
+			anchor.innerHTML = "Load Partial";
 			insertNext(abbreviate, anchor);
 		}
 		insertNext(placepoint, tag);
