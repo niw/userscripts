@@ -35,11 +35,17 @@ try {
 		}
 		return result;
 	}
+	function isSafari() {
+		return /Konqueror|Safari|KHTML/.test(navigator.userAgent);
+	}
+	function isFirefox() {
+    	return navigator.userAgent != null && navigator.userAgent.indexOf( "Firefox/" ) != -1;
+	}
 
 	function dofilter(listtag, childtagnames) {
 		return function(e) {
 			var terms = this.value.split(" ");
-			array_each(xpath(".//*[" + array_map(childtagnames, function(a){ return "(name() = '" + a + "')" }).join(" or ") + "]", listtag), function(node) {
+			array_each(xpath(".//*[" + array_map(childtagnames, function(a){ if(isFirefox()) { a = a.toUpperCase(); }; return "(name() = '" + a + "')" }).join(" or ") + "]", listtag), function(node) {
 				var display = "";
 				var innerText = node.innerHTML.replace(/<[^>]+>/g, "");
 				for (var i = 0; i < terms.length; i++) {
@@ -77,7 +83,7 @@ try {
 				margin = "2px";
 				display = "none";
 			}
-			input.addEventListener("search", dofilter(listtag, childtagnames), true);
+			input.addEventListener(isSafari() ? "search" : "keydown", dofilter(listtag, childtagnames), true);
 			listtag.parentNode.insertBefore(input, listtag);
 			inputs.push(input);
 		});
@@ -89,7 +95,7 @@ try {
 				input.style.display = (input.style.display == "none") ? "" : "none";
 			});
 		}
-	});
+	}, false);
 } catch(exception) {
 	var tag = document.createElement("div");
 	tag.setAttribute("style", "padding: 4px; font-size: 10px; color: #fff; border: 1px solid #f00; background: #c00;");
