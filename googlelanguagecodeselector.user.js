@@ -64,20 +64,6 @@ try {
 		return (RegExp.$1) ? RegExp.$1 : "en";
 	}
 	array_each(xpath("//form", document), function(form) {
-		// NOTE Current google result page was invalid HTML around form tag
-		// We should fix it to add the select tag.
-		//if(!form.childNodes.length) {
-		if(form.getAttribute("name") == "gs") {
-			var table = xpath("..//table[@class='tb']", form)[0];
-			if(table) {
-				form.parentNode.removeChild(form);
-				table.parentNode.appendChild(form);
-				table.parentNode.removeChild(table);
-				form.appendChild(table);
-			} else {
-				insertNext(form, error_span("Language Selector: Google might change the DOM layout!"));
-			}
-		}
 		var q = xpath(".//input[@name='q']", form);
 		if(q.length) {
 			array_each(xpath(".//input[@name='hl']", form), function(a) {
