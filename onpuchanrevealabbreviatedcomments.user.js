@@ -38,11 +38,11 @@ try {
 
 	function onpuchan_topics(context) {
 		var topics = [];
-		hr = xpath(".//form/form/hr", context);
+		var hr = xpath(".//form/form/hr", context);
 		for(var i = 0; i < hr.length; i++) {
 			var item = hr[i].nextSibling, elements = [], flag = false;
 			while(item != hr[i+1] && item != null) {
-				if(item.tagName == "INPUT" && item.getAttribute("name") == "delete[]") {
+				if(item.tagName == "A" && item.firstChild.tagName == "INPUT" && item.firstChild.getAttribute("name") == "delete[]") {
 					flag = true;
 				}
 				elements.push(item);
@@ -72,7 +72,7 @@ try {
 			anchor.setAttribute("style", "cursor: hand; font-size: 10px; color: #fff; padding: 4px; border: 1px solid #00f; background: #36c;");
 			var f = function() {
 				anchor.removeEventListener("click", f, false);
-				anchor.innerHTML = "Loading...";
+				anchor.innerHTML = "読み込み中...";
 				xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 					var html = document.createElement("div");
 					html.innerHTML = http.responseText;
@@ -83,7 +83,7 @@ try {
 				}});
 			}
 			anchor.addEventListener("click", f, false);
-			anchor.innerHTML = "Load Partial";
+			anchor.innerHTML = "全部表示";
 			insertNext(abbreviate, anchor);
 		}
 		insertNext(placepoint, tag);
