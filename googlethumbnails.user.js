@@ -24,8 +24,8 @@ try {
 		}
 		return result;
 	}
-	array_each(xpath("//*[(name() = 'div' and @class='g') or (name() = 'h3' and @class='sem')]", document), function(result) {
-		var result_link = xpath("./h2/a", result)[0];
+	array_each(xpath("//*[(name() = 'li' and @class='g')]", document), function(result) {
+		var result_link = xpath("./h3/a", result)[0];
 		if(result_link) {
 			result.setAttribute("style", result.getAttribute("style") + "; clear: left;");
 			var result_url = result_link.getAttribute("href");
