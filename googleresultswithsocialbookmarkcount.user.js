@@ -24,21 +24,23 @@ var sbmfilter = function (context) {
 			}, [$N('img', {
 				'src': 'http://b.hatena.ne.jp/entry/image/' + url,
 				'style': 'margin:0 1px;border:0;vertical-align:middle;'
-			})]),
-			$N('a', {
+			})])
+			/*
+			,$N('a', {
 				'href': 'http://clip.livedoor.com/page/' + url
 			}, [$N('img', {
 				'src': 'http://image.clip.livedoor.com/counter/' + url,
 				'style': 'margin:0 1px;border:0;vertical-align:middle;'
-			})]),
-			$N('a', {
+			})])
+			*/
+			,$N('a', {
 				'href': 'http://buzzurl.jp/entry/' + url
 			}, [$N('img', {
 				'src': 'http://api.buzzurl.jp/api/counter/' + url,
 				'style': 'margin:0 1px;border:0;vertical-align:middle;'
-			})]),
+			})])
 			/*
-			$N('a', {
+			,$N('a', {
 				'href': 'http://delicious.com/url/' + md5
 			}, [$N('img', {
 				'src': 'http://del.icio.us/feeds/img/savedcount/' + md5 + '?aggregate',
