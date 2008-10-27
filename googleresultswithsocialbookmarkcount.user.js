@@ -15,7 +15,7 @@ var sbmfilter = function (context) {
 	for (var i = 0, j = links.snapshotLength; i < j; ++i) {
 		var a = links.snapshotItem(i);
 		var url = a.href;
-		var md5 = md5_hex(url);
+		//var md5 = md5_hex(url);
 		a.parentNode.appendChild($N('span', {
 			'class': 'sbm'
 		}, [
