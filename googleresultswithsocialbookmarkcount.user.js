@@ -3,8 +3,8 @@
 // @version        0.1.0
 // @namespace      http://niw.at/
 // @description    Displays social bookmark count in search results of Google.
-// @include        http://*.google.*/search*
-// @include        http://*.google.*/custom*
+// @include        http://www.google.*/search*
+// @include        http://www.google.*/custom*
 // ==/UserScript==
 
 (function () {
