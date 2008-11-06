@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google Language Code Selector
-// @version        0.1.0
+// @version        0.1.1
 // @namespace      http://niw.at/
 // @description    Select hl paramter for google query
 // @include        http://www.google.*/*q=*
