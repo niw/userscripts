@@ -58,7 +58,7 @@ try {
 		}
 	}
 
-	array_each(xpath("//*[((name() = 'LI' or name() = 'li') and @class='g')]", document), function(result) {
+	array_each(xpath("//*[((name() = 'LI' or name() = 'li') and contains(@class,'g'))]", document), function(result) {
 		var result_link = xpath("./h3/a", result)[0];
 		if(result_link) {
 			result.setAttribute("style", result.getAttribute("style") + "; clear: left;");
