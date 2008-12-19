@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google Results with Bookmark Count
-// @version        0.1.0
+// @version        0.1.1
 // @namespace      http://niw.at/
 // @description    Add bookmark count labels to Google result page.
 // @include        http://www.google.*/search*
