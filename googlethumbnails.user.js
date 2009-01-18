@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Google Thumbnails for Safari
-// @version       0.1.1
+// @version       0.2
 // @namespace     http://niw.at/
 // @description   Adds web site thumbnail images to google search results, original is from http://flet.ch/things/greasemonkey/
 // @include       http://www.google.*/search*
