@@ -10,6 +10,14 @@
 // ==/UserScript==
 
 (function() {
+
+// a list of languages which you want to show on the google search form
+var LANGUAGES = {
+	en: "English",
+	ja: "Japanese"
+};
+var BUTTON_MODE = true;
+
 try {
 	function array_each(a, f) {
 		for(var i = 0; i < a.length; i++) {
@@ -22,6 +30,15 @@ try {
 				f(key, o[key]);
 			}
 		}
+	}
+	function hash_keys(o) {
+		var keys = [];
+		for(var key in o) {
+			if(!(o[key] && o[key] == o.__proto__[key])) {
+				keys.push(key);
+			}
+		}
+		return keys;
 	}
 	function insertNext(h, a) {
 		h.parentNode.insertBefore(a, h.nextSibling);
@@ -42,22 +59,42 @@ try {
 	}
 
 	function lang_select(selected) {
-		var langs = {"en": "English", "ja": "Japanese"};
-		var select = document.createElement("select");
-		select.setAttribute("name", "hl");
-		hash_each(langs, function(key, lang) {
-			var option = document.createElement("option");
-			option.setAttribute("value", key);
-			if(key == selected) {
-				option.setAttribute("selected", "");
+		if(BUTTON_MODE) {
+			var keys = hash_keys(LANGUAGES);
+			var i = keys.indexOf(selected) + 1;
+			if(i >= keys.length) {
+				i = 0;
 			}
-			option.appendChild(document.createTextNode(lang));
-			select.appendChild(option);
-		});
-		select.addEventListener('change', function() {
-			this.form.submit();
-		}, false);
-		return select;
+			var key = keys[i];
+			var button = document.createElement("input");
+			button.setAttribute("type", "button");
+			button.setAttribute("value", LANGUAGES[keys[i]]);
+			button.addEventListener("click", function(e) {
+				var hidden = document.createElement("input");
+				hidden.setAttribute("type", "hidden");
+				hidden.setAttribute("name", "hl");
+				hidden.setAttribute("value", key);
+				this.form.appendChild(hidden);
+				this.form.submit();
+			}, false);
+			return button;
+		} else {
+			var select = document.createElement("select");
+			select.setAttribute("name", "hl");
+			hash_each(LANGUAGES, function(key, lang) {
+				var option = document.createElement("option");
+				option.setAttribute("value", key);
+				if(key == selected) {
+					option.setAttribute("selected", "");
+				}
+				option.appendChild(document.createTextNode(lang));
+				select.appendChild(option);
+			});
+			select.addEventListener("change", function() {
+				this.form.submit();
+			}, false);
+			return select;
+		}
 	}
 	function current_lang() {
 		document.location.href.replace(/lr=lang_[^&]+&?/, '').replace(/hl=([^&]+)&?/, '');
