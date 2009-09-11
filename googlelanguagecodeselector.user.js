@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google Language Code Selector
-// @version        0.2.0
+// @version        0.2.1
 // @namespace      http://niw.at/
 // @description    Select hl paramter for google query
 // @include        http://www.google.*/*q=*
@@ -68,6 +68,7 @@ try {
 			var key = keys[i];
 			var button = document.createElement("input");
 			button.setAttribute("type", "button");
+			button.setAttribute("class", "lsb");
 			button.setAttribute("value", LANGUAGES[keys[i]]);
 			button.addEventListener("click", function(e) {
 				var hidden = document.createElement("input");
