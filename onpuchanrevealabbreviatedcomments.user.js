@@ -2,7 +2,7 @@
 // @name           Onpuchan Reveal Abbreviated Comments
 // @namespace      http://niw.at/
 // @description    Reveal abbreviated comments on Onpuchan BBS
-// @include        http://rail.uploader.dyndns.org/*
+// @include        http://rail-uploader.khz-net.com/*
 // ==/UserScript==
 
 (function() {
