@@ -8,6 +8,10 @@
 // ==/UserScript==
 
 (function() {
+// exclude keywords in regular expression
+var EXCLUDE_TITLE_KEYWORDS = /(ucsf|usf|richmond|sunset|marina|castro|twin)/i;
+var EXCLUDE_CONTENT_KEYWORDS = /(TMS333)/i;
+
 try {
 	function array_each(a, f) {
 		for(var i = 0; i < a.length; i++) {
@@ -65,7 +69,7 @@ try {
 		var href = tag.getAttribute("href");
 		var title = getText([p]);
 
-		if(title.match(/ucsf|usf|richmond|sunset|marina|castro/i)) {
+		if(title.match(EXCLUDE_TITLE_KEYWORDS)) {
 			remove_by_line(p);
 		} else {
  			var s = document.createElement("span");
@@ -76,8 +80,8 @@ try {
 				var html = document.createElement("div");
 				html.innerHTML = http.responseText;
 				var content = xpath(".//div[@id='userbody']", html);
-				if(getText(content).match(/TMS333/i)) {
-					s.innerHTML = "TMS333";
+				if(m = getText(content).match(EXCLUDE_CONTENT_KEYWORDS)) {
+					s.innerHTML = m[1];
 					remove_by_line(p);
 				} else {
 					var images = xpath(".//table//img[contains(@alt, 'image ')]", html);
