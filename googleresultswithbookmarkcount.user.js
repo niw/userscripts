@@ -15,13 +15,6 @@ try {
 			f(a[i]);
 		}
 	}
-	function hash_each(o, f) {
-		for(var key in o) {
-			if(!(o[key] && o[key] == o.__proto__[key])) {
-				f(key, o[key]);
-			}
-		}
-	}
 	function insertNext(h, a) {
 		h.parentNode.insertBefore(a, h.nextSibling);
 	}
