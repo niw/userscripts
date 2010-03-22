@@ -1,10 +1,9 @@
 // ==UserScript==
 // @name           Craigslist Filter
-// @version        0.0.1
+// @version        0.1.0
 // @namespace      http://niw.at/
 // @description    Filtering the reuslt of Craigslist
-// @include        http://sfbay.craigslist.org/sfc/apa*
-// @include        http://sfbay.craigslist.org/search/apa/sfc*
+// @include        http://sfbay.craigslist.org/*apa*
 // ==/UserScript==
 
 (function() {
