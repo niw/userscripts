@@ -86,22 +86,32 @@ try {
 			xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 				var html = document.createElement("div");
 				html.innerHTML = http.responseText;
+
 				var content = xpath(".//div[@id='userbody']", html);
-				if(m = getText(content).match(EXCLUDE_CONTENT_KEYWORDS)) {
+				var content_text = getText(content);
+				if(m = content_text.match(EXCLUDE_CONTENT_KEYWORDS)) {
 					s.innerHTML = m[1];
 					remove_by_line(p);
 				}else {
-					var images = xpath(".//table//img[contains(@alt, 'image ')]", html);
-					if(images.length) {
-						var div = document.createElement("div");
-						div.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px");
-						array_each(images, function(i) {
-							i.setAttribute("height", "120px");
-							div.appendChild(i);
-						});
+					var div = document.createElement("div");
+					div.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;");
+
+					if(xpath(".//img", html).length == 0) {
+						s.innerHTML = "No Images";
+						div.innerHTML = content_text;
 						p.appendChild(div);
+					} else {
+						var images = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html);
+						if(images.length) {
+							array_each(images, function(i) {
+								i.setAttribute("height", "120px");
+								i.setAttribute("width", "120px");
+								div.appendChild(i);
+							});
+							p.appendChild(div);
+						}
+						s.parentNode.removeChild(s);
 					}
-					s.parentNode.removeChild(s);
 				}
 			}});
 		}
