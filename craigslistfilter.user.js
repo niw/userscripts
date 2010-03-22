@@ -9,8 +9,10 @@
 
 (function() {
 // exclude keywords in regular expression
-var EXCLUDE_TITLE_KEYWORDS = /(ucsf|usf|richmond|sunset|marina|castro|twin)/i;
+var EXCLUDE_TITLE_KEYWORDS = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
 var EXCLUDE_CONTENT_KEYWORDS = /(TMS333)/i;
+var MAX_RATE = 2500;
+var MIN_RATE = 0;
 
 try {
 	function array_each(a, f) {
@@ -68,8 +70,13 @@ try {
 		var p = tag.parentNode;	
 		var href = tag.getAttribute("href");
 		var title = getText([p]);
+		var rate = 0;
+		if(m = title.match(/\$([0-9]+)/)) {
+			rate = parseInt(m[1]);
+		}
 
-		if(title.match(EXCLUDE_TITLE_KEYWORDS)) {
+
+		if(title.match(EXCLUDE_TITLE_KEYWORDS) || rate > MAX_RATE || rate <= MIN_RATE) {
 			remove_by_line(p);
 		} else {
  			var s = document.createElement("span");
@@ -83,7 +90,7 @@ try {
 				if(m = getText(content).match(EXCLUDE_CONTENT_KEYWORDS)) {
 					s.innerHTML = m[1];
 					remove_by_line(p);
-				} else {
+				}else {
 					var images = xpath(".//table//img[contains(@alt, 'image ')]", html);
 					if(images.length) {
 						var div = document.createElement("div");
