@@ -8,15 +8,19 @@
 // ==/UserScript==
 
 (function() {
-// exclude keywords in regular expression
-var EXCLUDE_TITLE_KEYWORDS = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
-var EXCLUDE_CONTENT_KEYWORDS = /(TMS333)/gi;
-var HIGHLIGHT_CONTENT_KEYWORDS = /(Washer|Dryer|In unit|w\/d)/gi;
+
+// CONFIGURATION
+// exclude keywords in regular expression (examples)
+var EXCLUDE_TITLE_KEYWORDS     = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
+var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333)/gi;
+// highlighted keywords in regular expression (examples)
+var HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d)/gi;
+// range of budget
 var MAX_RATE = 2500;
 var MIN_RATE = 0;
 
 try {
-	function array_each(a, f) {
+	function arrayEach(a, f) {
 		for(var i = 0; i < a.length; i++) {
 			f(a[i]);
 		}
@@ -24,6 +28,10 @@ try {
 	function insertNext(h, a) {
 		h.parentNode.insertBefore(a, h.nextSibling);
 	}
+	function removeTag(a) {
+		a.parentNode.removeChild(a);
+	}
+	// NOTE based on jquery.js
 	function getText(elems) {
 		var ret="", e;
 		for(var i=0; elems[i]; i++){
@@ -57,12 +65,13 @@ try {
 		return result;
 	}
 
-	function remove_by_line(e) {
+
+	function strikeTag(e) {
 		var span = document.createElement("span");
 		span.setAttribute("style", "color: #ccc; text-decoration: line-through;");
 		e.parentNode.insertBefore(span, e);
 		span.appendChild(e);
-		array_each(xpath(".//a", e), function(a){
+		arrayEach(xpath(".//a", e), function(a){
 			a.setAttribute("style", "color: #ccc;");
 		});
 	}
@@ -70,7 +79,7 @@ try {
 		gray: "color: #333; background: #eee; border-color: #ccc;",
 		blue: "color: #27b; background: #def; border-color: #379;"
 	};
-	function add_badge(e, html, color) {
+	function addStatusTag(e, html, color) {
 		var s = document.createElement("span");
 		var style = "font-size: 10px; margin: 0 5px; border: 1px solid;";
 		s.setAttribute("style", style + (COLORS[color] || COLORS["gray"]));
@@ -81,51 +90,50 @@ try {
 		return s;
 	}
 
-	array_each(xpath("./blockquote/p/a", document.body), function(tag) {
-		var p = tag.parentNode;	
-		var href = tag.getAttribute("href");
-		var title = getText([p]);
+
+	arrayEach(xpath("./blockquote/p/a", document.body), function(anchor_tag) {
+		var line_tag = anchor_tag.parentNode;	
+		var title = getText([line_tag]);
 		var rate = 0;
 		if(m = title.match(/\$([0-9]+)/)) {
 			rate = parseInt(m[1]);
 		}
 
 		if(title.match(EXCLUDE_TITLE_KEYWORDS) || rate > MAX_RATE || rate <= MIN_RATE) {
-			remove_by_line(p);
+			strikeTag(line_tag);
 		} else {
-			var status_badge = add_badge(tag, "Loading...");
-			xmlHttpRequest({method: "GET", url: href, onload: function(http) {
+			var status_tag = addStatusTag(anchor_tag, "Loading...");
+			xmlHttpRequest({method: "GET", url: anchor_tag.getAttribute("href"), onload: function(http) {
 				var html = document.createElement("div");
 				html.innerHTML = http.responseText;
+				var content = getText(xpath(".//div[@id='userbody']", html));
 
-				var content = xpath(".//div[@id='userbody']", html);
-				var content_text = getText(content);
-				if(m = content_text.match(EXCLUDE_CONTENT_KEYWORDS)) {
-					status_badge.innerHTML = m.join(", ");
-					remove_by_line(p);
+				if(m = content.match(EXCLUDE_CONTENT_KEYWORDS)) {
+					status_tag.innerHTML = m.join(", ");
+					strikeTag(line_tag);
 				} else {
-					if(m = content_text.match(HIGHLIGHT_CONTENT_KEYWORDS)) {
-						add_badge(tag, m.join(", "), "blue");
+					if(m = content.match(HIGHLIGHT_CONTENT_KEYWORDS)) {
+						addStatusTag(anchor_tag, m.join(", "), "blue");
 					}
 
-					var div = document.createElement("div");
-					div.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;");
+					var inline_tag = document.createElement("div");
+					inline_tag.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;");
 
 					if(xpath(".//img", html).length == 0) {
-						status_badge.innerHTML = "No Images";
-						div.innerHTML = content_text;
-						p.appendChild(div);
+						status_tag.innerHTML = "No Images";
+						inline_tag.innerHTML = content;
+						line_tag.appendChild(inline_tag);
 					} else {
-						var images = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html);
-						if(images.length) {
-							array_each(images, function(i) {
-								i.setAttribute("height", "120px");
-								i.setAttribute("width", "120px");
-								div.appendChild(i);
+						var img_tags = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html);
+						if(img_tags.length) {
+							arrayEach(img_tags, function(img_tag) {
+								img_tag.setAttribute("height", "120px");
+								img_tag.setAttribute("width", "120px");
+								inline_tag.appendChild(img_tag);
 							});
-							p.appendChild(div);
+							line_tag.appendChild(inline_tag);
 						}
-						status_badge.parentNode.removeChild(status_badge);
+						removeTag(status_tag);
 					}
 				}
 			}});
