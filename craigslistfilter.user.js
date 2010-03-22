@@ -10,7 +10,8 @@
 (function() {
 // exclude keywords in regular expression
 var EXCLUDE_TITLE_KEYWORDS = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
-var EXCLUDE_CONTENT_KEYWORDS = /(TMS333)/i;
+var EXCLUDE_CONTENT_KEYWORDS = /(TMS333)/gi;
+var HIGHLIGHT_CONTENT_KEYWORDS = /(Washer|Dryer|In unit|w\/d)/gi;
 var MAX_RATE = 2500;
 var MIN_RATE = 0;
 
@@ -65,6 +66,20 @@ try {
 			a.setAttribute("style", "color: #ccc;");
 		});
 	}
+	COLORS = {
+		gray: "color: #333; background: #eee; border-color: #ccc;",
+		blue: "color: #27b; background: #def; border-color: #379;"
+	};
+	function add_badge(e, html, color) {
+		var s = document.createElement("span");
+		var style = "font-size: 10px; margin: 0 5px; border: 1px solid;";
+		s.setAttribute("style", style + (COLORS[color] || COLORS["gray"]));
+		if(html) {
+			s.innerHTML = html;
+		}
+		insertNext(e, s);
+		return s;
+	}
 
 	array_each(xpath("./blockquote/p/a", document.body), function(tag) {
 		var p = tag.parentNode;	
@@ -75,14 +90,10 @@ try {
 			rate = parseInt(m[1]);
 		}
 
-
 		if(title.match(EXCLUDE_TITLE_KEYWORDS) || rate > MAX_RATE || rate <= MIN_RATE) {
 			remove_by_line(p);
 		} else {
- 			var s = document.createElement("span");
-			s.setAttribute("style", "font-size: 10px; color: #333; border: 1px solid #ccc; background: #eee; margin: 0 5px;");
-			s.innerHTML = "Loading...";
-			insertNext(tag, s);
+			var status_badge = add_badge(tag, "Loading...");
 			xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 				var html = document.createElement("div");
 				html.innerHTML = http.responseText;
@@ -90,14 +101,18 @@ try {
 				var content = xpath(".//div[@id='userbody']", html);
 				var content_text = getText(content);
 				if(m = content_text.match(EXCLUDE_CONTENT_KEYWORDS)) {
-					s.innerHTML = m[1];
+					status_badge.innerHTML = m.join(", ");
 					remove_by_line(p);
-				}else {
+				} else {
+					if(m = content_text.match(HIGHLIGHT_CONTENT_KEYWORDS)) {
+						add_badge(tag, m.join(", "), "blue");
+					}
+
 					var div = document.createElement("div");
 					div.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;");
 
 					if(xpath(".//img", html).length == 0) {
-						s.innerHTML = "No Images";
+						status_badge.innerHTML = "No Images";
 						div.innerHTML = content_text;
 						p.appendChild(div);
 					} else {
@@ -110,7 +125,7 @@ try {
 							});
 							p.appendChild(div);
 						}
-						s.parentNode.removeChild(s);
+						status_badge.parentNode.removeChild(status_badge);
 					}
 				}
 			}});
