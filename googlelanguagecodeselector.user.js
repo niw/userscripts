@@ -94,7 +94,9 @@ try {
 			select.addEventListener("change", function() {
 				this.form.submit();
 			}, false);
-			return select;
+			var container = document.createElement("span");
+			container.appendChild(select);
+			return container;
 		}
 	}
 	function current_lang() {
@@ -113,6 +115,12 @@ try {
 			if(submit && (submit = submit[0])) {
 				var selector = lang_select(selected);
 				insertNext(submit, selector);
+				var container = submit.parentNode;
+				if(container && container.getAttribute("class") == "lsbb") {
+					submit.setAttribute("style", "border-right: 1px solid #cccccc;");
+					var width = submit.offsetWidth + selector.offsetWidth;
+					container.setAttribute("style", "width: " + width + "px;");
+				}
 			}
 		}
 	});
