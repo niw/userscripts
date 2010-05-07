@@ -52,6 +52,11 @@ try {
 		return result;
 	}
 
+	function remove_all_input(form, name) {
+		array_each(xpath(".//input[@name='" + name + "']", form), function(a) {
+			a.parentNode.removeChild(a);
+		});
+	}
 	function lang_select(selected) {
 		if(BUTTON_MODE) {
 			var keys = hash_keys(LANGUAGES);
@@ -65,20 +70,21 @@ try {
 			button.setAttribute("class", "lsb");
 			button.setAttribute("value", LANGUAGES[keys[i]]);
 			button.addEventListener("click", function(e) {
+				remove_all_input(this.form, "lr");
 				var hidden = document.createElement("input");
 				hidden.setAttribute("type", "hidden");
-				hidden.setAttribute("name", "hl");
-				hidden.setAttribute("value", key);
+				hidden.setAttribute("name", "lr");
+				hidden.setAttribute("value", "lang_" + key);
 				this.form.appendChild(hidden);
 				this.form.submit();
 			}, false);
 			return button;
 		} else {
 			var select = document.createElement("select");
-			select.setAttribute("name", "hl");
+			select.setAttribute("name", "lr");
 			hash_each(LANGUAGES, function(key, lang) {
 				var option = document.createElement("option");
-				option.setAttribute("value", key);
+				option.setAttribute("value", "lang_" + key);
 				if(key == selected) {
 					option.setAttribute("selected", "");
 				}
@@ -92,19 +98,22 @@ try {
 		}
 	}
 	function current_lang() {
-		document.location.href.replace(/lr=lang_[^&]+&?/, '').replace(/hl=([^&]+)&?/, '');
+		document.location.href.replace(/hl=([^&]+)&?/, '').replace(/lr=lang_([^&]+)&?/, '');
 		return (RegExp.$1) ? RegExp.$1 : "en";
 	}
+
+	var selected = current_lang();
 	array_each(xpath("//form", document), function(form) {
 		var q = xpath(".//input[@name='q']", form);
 		if(q.length) {
-			array_each(xpath(".//input[@name='hl']", form), function(a) {
-				a.parentNode.removeChild(a);
-			});
-			array_each(q, function(a) {
-				insertNext(a, lang_select(current_lang()));
-				insertNext(a, document.createTextNode(" "));
-			});
+			if(!BUTTON_MODE) {
+				remove_all_input(form, "lr");
+			}
+			var submit = xpath(".//input[@type='submit']", form);
+			if(submit && (submit = submit[0])) {
+				var selector = lang_select(selected);
+				insertNext(submit, selector);
+			}
 		}
 	});
 } catch(exception) {
