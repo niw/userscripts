@@ -118,6 +118,7 @@ try {
 				var container = submit.parentNode;
 				if(container && container.getAttribute("class") == "lsbb") {
 					submit.setAttribute("style", "border-right: 1px solid #cccccc;");
+					selector.setAttribute("style", "border-left: 1px solid #ffffff;");
 					var width = submit.offsetWidth + selector.offsetWidth;
 					container.setAttribute("style", "width: " + width + "px;");
 				}
