@@ -7,13 +7,32 @@
 
 (function() {
 try {
-	function array_each(a, f) {
+	function arrayEach(a, f) {
 		for(var i = 0; i < a.length; i++) {
-			f(a[i]);
+			f(a[i], i);
 		}
+	}
+	function arrayMap(a, f) {
+		var res = [];
+		for(var i = 0; i < a.length; i++) {
+			res[i] = f(a[i], i);
+		}
+		return res;
+	}
+	function arrayCompact(a) {
+		var res = [];
+		for(var i = 0; i < a.length; i++) {
+			if(a[i]) {
+				res.push(a[i])
+			}
+		}
+		return res;
 	}
 	function insertNext(h, a) {
 		h.parentNode.insertBefore(a, h.nextSibling);
+	}
+	function insertBefore(h, a) {
+		h.parentNode.insertBefore(a, h);
 	}
 	function xpath(xpath, context) {
 		var result = [];
@@ -36,57 +55,59 @@ try {
 		xmlhttp.send(option['data']);
 	}
 
-	function onpuchan_topics(context) {
-		var topics = [];
-		var hr = xpath(".//form/form/hr", context);
-		for(var i = 0; i < hr.length; i++) {
-			var item = hr[i].nextSibling, elements = [], flag = false;
-			while(item != hr[i+1] && item != null) {
-				if(item.tagName == "A" && item.firstChild.tagName == "INPUT" && item.firstChild.getAttribute("name") == "delete[]") {
-					flag = true;
+	function onpuchanTopics(context) {
+		var anchors = xpath(".//input[@value='削除']/ancestor::form[position()=1]/a[text()='返信']/preceding-sibling::a[child::input[@name='delete[]']][position()=1]", context)
+		var topics = arrayMap(anchors, function(anchor, index) {
+			var item = anchor, elements = [];
+			while(item && item != anchors[index + 1]) {
+				if(item.tagName && item.tagName.toLowerCase() == "hr") {
+					break;
 				}
 				elements.push(item);
 				item = item.nextSibling;
 			}
-			if(!flag) {
-				continue
-			}
 			var tag = document.createElement("div");
-			array_each(elements, function(a) {
+			insertBefore(anchor, tag);
+			arrayEach(elements, function(a) {
+				var i = xpath(".//input[@value='削除']", a)[0];
+				while(i) {
+					if(i.tagName && i.tagName.toLowerCase() == "hr") {
+						break;
+					}
+					var sibling = i.previousSibling;
+					insertNext(tag, i);
+					i = sibling;
+				}
 				a.parentNode.removeChild(a);
 				tag.appendChild(a);
 			});
-			topics.push([hr[i],tag]);
-		}
+			return tag;
+		});
 		return topics;
 	}
-	array_each(onpuchan_topics(document), function(topic) {
-		var placepoint = topic[0];
-		var tag = topic[1];
-
-		var link = xpath(".//a[contains(text(), '返信')]", tag)[0];
-		var abbreviate = xpath(".//*[contains(text(), '省略')]", tag)[0];
-		if(link && abbreviate) {
-			var href = link.getAttribute("href");
+	arrayEach(onpuchanTopics(document), function(topic) {
+		var reply = xpath(".//a[contains(text(), '返信')]", topic)[0];
+		var abbreviate = xpath(".//*[contains(text(), '省略')]", topic)[0];
+		if(reply && abbreviate) {
+			var href = reply.getAttribute("href");
 			var anchor = document.createElement("a");
 			anchor.setAttribute("style", "cursor: hand; font-size: 10px; color: #fff; padding: 4px; border: 1px solid #00f; background: #36c;");
-			var f = function() {
-				anchor.removeEventListener("click", f, false);
+			var onClick = function() {
+				anchor.removeEventListener("click", onClick, false);
 				anchor.innerHTML = "読み込み中...";
 				xmlHttpRequest({method: "GET", url: href, onload: function(http) {
 					var html = document.createElement("div");
 					html.innerHTML = http.responseText;
-					array_each(onpuchan_topics(html), function(t) {
-						tag.parentNode.removeChild(tag);
-						insertNext(placepoint, t[1]);
+					arrayEach(onpuchanTopics(html), function(t) {
+						insertNext(topic, t);
 					});
+					topic.parentNode.removeChild(topic);
 				}});
 			}
-			anchor.addEventListener("click", f, false);
+			anchor.addEventListener("click", onClick, false);
 			anchor.innerHTML = "全部表示";
 			insertNext(abbreviate, anchor);
 		}
-		insertNext(placepoint, tag);
 	});
 } catch(exception) {
 	var tag = document.createElement("div");
