@@ -11,7 +11,7 @@
 // CONFIGURATION
 // exclude keywords in regular expression (examples)
 var EXCLUDE_TITLE_KEYWORDS     = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
-var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333)/gi;
+var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333)/gi;
 // highlighted keywords in regular expression (examples)
 var HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d)/gi;
 // range of budget
