@@ -4,19 +4,20 @@
 // @namespace      http://niw.at/
 // @description    Filtering the reuslt of Craigslist
 // @include        http://sfbay.craigslist.org/*apa*
+// @include        http://sfbay.craigslist.org/*roo*
 // ==/UserScript==
 
 (function() {
 
 // CONFIGURATION
 // exclude keywords in regular expression (examples)
-var EXCLUDE_TITLE_KEYWORDS     = /(ucsf|usf|richmond|sunset|marina|castro|twin|ingleside)/i;
-var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333)/gi;
+var EXCLUDE_TITLE_KEYWORDS     = /(sunset|ingleside|tenderloin)/i;
+var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties)/gi;
 // highlighted keywords in regular expression (examples)
-var HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d)/gi;
+var HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking)/gi;
 // range of budget
 var MAX_RATE = 2500;
-var MIN_RATE = 0;
+var MIN_RATE = 500;
 
 try {
 	function arrayEach(a, f) {
