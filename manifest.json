@@ -1,0 +1,45 @@
+{
+  "name": "User Scripts",
+  "version": "0.1.0",
+  "description": "User Scripts",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://www.google.com/*q=*",
+        "http://www.google.com/",
+        "http://www.google.com/webhp*",
+        "http://www.google.com/reader*"
+      ],
+      "js": [
+        "googlelanguagecodeselector.user.js",
+        "googleresultswithbookmarkcount.user.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://mixi.jp/view_diary.pl?url=*",
+        "http://mixi.jp/new_friend_diary.pl*"
+      ],
+      "js": [
+        "automaticmovingmixi.user.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://sfbay.craigslist.org/*apa*",
+        "http://sfbay.craigslist.org/*roo*"
+      ],
+      "js": [
+        "craigslistfilter.user.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://rail-uploader.khz-net.com/*"
+      ],
+      "js": [
+        "onpuchanrevealabbreviatedcomments.user.js"
+      ]
+    }
+  ]
+}
