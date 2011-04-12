@@ -124,12 +124,16 @@ try {
 						inline_tag.innerHTML = content;
 						line_tag.appendChild(inline_tag);
 					} else {
-						var img_tags = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html);
+						//var img_tags = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html);
+						var img_tags = xpath(".//table//img", html);
 						if(img_tags.length) {
 							arrayEach(img_tags, function(img_tag) {
-								img_tag.setAttribute("height", "120px");
-								img_tag.setAttribute("width", "120px");
-								inline_tag.appendChild(img_tag);
+								if(img_tag.width > 120 && img_tag.height > 120) {
+									img_tag.setAttribute("height", "120px");
+									img_tag.setAttribute("width", "120px");
+									img_tag.setAttribute("style", "");
+									inline_tag.appendChild(img_tag);
+								}
 							});
 							line_tag.appendChild(inline_tag);
 						}
