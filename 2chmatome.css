@@ -1,7 +1,9 @@
 .sidewrapper,
-.topbox,
 .google-user-ad,
-.amazon_rank
+.amazon_rank,
+.plugin2_outline,
+#ad_right,
+#center > center
 {
   display: none;
 }

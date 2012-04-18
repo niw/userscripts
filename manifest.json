@@ -32,7 +32,8 @@
     {
       "matches": [
         "http://hamusoku.com/*",
-        "http://blog.livedoor.jp/dqnplus/*"
+        "http://blog.livedoor.jp/dqnplus/*",
+        "http://news4vip.livedoor.biz/*"
       ],
       "css": [
         "2chmatome.css"
