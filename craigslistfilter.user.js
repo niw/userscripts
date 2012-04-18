@@ -16,7 +16,7 @@ var EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties)/gi;
 // highlighted keywords in regular expression (examples)
 var HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking)/gi;
 // range of budget
-var MAX_RATE = 2500;
+var MAX_RATE = 3500;
 var MIN_RATE = 1000;
 
 try {
