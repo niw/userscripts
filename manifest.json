@@ -28,6 +28,14 @@
       "js": [
         "onpuchan_reveal_abbreviated_comments.user.js"
       ]
+    },
+    {
+      "matches": [
+        "http://hamusoku.com/*"
+      ],
+      "css": [
+        "hamusoku.css"
+      ]
     }
   ]
 }
