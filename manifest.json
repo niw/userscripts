@@ -5,18 +5,6 @@
   "content_scripts": [
     {
       "matches": [
-        "http://www.google.com/*q=*",
-        "http://www.google.com/",
-        "http://www.google.com/webhp*",
-        "http://www.google.com/reader*"
-      ],
-      "js": [
-        "googlelanguagecodeselector.user.js",
-        "googleresultswithbookmarkcount.user.js"
-      ]
-    },
-    {
-      "matches": [
         "http://mixi.jp/view_diary.pl?url=*",
         "http://mixi.jp/new_friend_diary.pl*"
       ],
