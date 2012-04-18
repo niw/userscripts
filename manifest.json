@@ -26,7 +26,7 @@
         "http://rail-uploader.khz-net.com/*"
       ],
       "js": [
-        "onpuchanrevealabbreviatedcomments.user.js"
+        "onpuchan_reveal_abbreviated_comments.user.js"
       ]
     }
   ]
