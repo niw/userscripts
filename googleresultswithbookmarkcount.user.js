@@ -52,15 +52,14 @@ try {
 	}
 
 	array_each(xpath("//*[((name() = 'LI' or name() = 'li') and contains(@class,'g'))]", document), function(result) {
-		var result_link = xpath("./h3/a", result)[0];
+		var result_link = xpath(".//h3/a", result)[0];
 		if(result_link) {
-			result.setAttribute("style", result.getAttribute("style") + "; clear: left;");
 			var result_url = result_link.getAttribute("href");
 			var real_result_url = result_url.replace(/^(?:([^\/].*)|\/url\?.*q=([^&]+)&?.*$)/i, "$1$2");
 			jsonp("http://b.hatena.ne.jp/entry/json/?url=" + escape(real_result_url), function(data) {
 				if(data && data.count) {
 					var tag = document.createElement("a");
-					tag.setAttribute("style", "margin: 0 1px; font-size: 80%; color: #f00; background: #fcc; text-decoration: underline;");
+					tag.setAttribute("style", "display: inline-block; border: 1px solid #f00; border-radius: 3px; padding: 2px; margin: 0 1px; font-size: 50%; color: #f00; background: #fcc; text-decoration: none;");
 					tag.setAttribute("href", data.entry_url);
 					tag.innerHTML = data.count + " users";
 					insertNext(result_link, tag);
@@ -69,7 +68,7 @@ try {
 			jsonp("http://feeds.delicious.com/v2/json/urlinfo/" + md5(real_result_url), function(data) {
 				if(data[0]) {
 					var tag = document.createElement("a");
-					tag.setAttribute("style", "margin: 0 1px; font-size: 80%; color: #fff; background: #3174d0;");
+					tag.setAttribute("style", "display: inline-block; border: 1px solid #09f; border-radius: 3px; padding: 2px; margin: 0 1px; font-size: 50%; color: #fff; background: #3174d0;");
 					tag.innerHTML = data[0].total_posts + " posts";
 					insertNext(result_link, tag);
 				}

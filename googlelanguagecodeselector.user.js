@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Google Language Code Selector
-// @version        0.3.0
+// @version        0.3.1
 // @namespace      http://niw.at/
 // @description    Select hl paramter for google query
 // @include        http://www.google.*/*q=*
@@ -66,7 +66,7 @@ try {
 			}
 			var key = keys[i];
 			var button = document.createElement("input");
-			button.setAttribute("type", "button");
+			button.setAttribute("type", "submit");
 			button.setAttribute("class", "lsb");
 			button.setAttribute("value", LANGUAGES[keys[i]]);
 			button.addEventListener("click", function(e) {
@@ -77,6 +77,7 @@ try {
 				hidden.setAttribute("value", "lang_" + key);
 				this.form.appendChild(hidden);
 				this.form.submit();
+				return false;
 			}, false);
 			return button;
 		} else {
@@ -103,6 +104,9 @@ try {
 		document.location.href.replace(/hl=([^&]+)&?/, '').replace(/lr=lang_([^&]+)&?/, '');
 		return (RegExp.$1) ? RegExp.$1 : "en";
 	}
+	function selectorContainer(selector, reference_container) {
+		return container;
+	}
 
 	var selected = current_lang();
 	array_each(xpath("//form", document), function(form) {
@@ -115,13 +119,6 @@ try {
 			if(submit && (submit = submit[0])) {
 				var selector = lang_select(selected);
 				insertNext(submit, selector);
-				var container = submit.parentNode;
-				if(container && container.getAttribute("class") == "lsbb") {
-					submit.setAttribute("style", "border-right: 1px solid #cccccc;");
-					selector.setAttribute("style", "border-left: 1px solid #ffffff;");
-					var width = submit.offsetWidth + selector.offsetWidth;
-					container.setAttribute("style", "width: " + width + "px;");
-				}
 			}
 		}
 	});

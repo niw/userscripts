@@ -26,9 +26,8 @@ try {
 	}
 	function addThumbnails(target) {
 		array_each(xpath(".//*[((name() = 'LI' or name() = 'li') and contains(@class,'g'))]", target), function(result) {
-			var result_link = xpath("./h3/a", result)[0];
+			var result_link = xpath(".//h3/a", result)[0];
 			if(result_link) {
-				result.setAttribute("style", result.getAttribute("style") + "; clear: left;");
 				var result_url = result_link.getAttribute("href");
 				var real_result_url = result_url.replace(/^(?:([^\/].*)|\/url\?.*q=([^&]+)&?.*$)/i, "$1$2");
 				var letter = real_result_url.replace(/^[^:]*:\/\/(?:www\.)?(.).*/, "$1");
@@ -37,7 +36,8 @@ try {
 				var thumbnail = document.createElement("div");
 				thumbnail.setAttribute("style", "float: left; margin: 0 8px 2px 0; width: 110px; height: 80px; overflow: hidden; background: #D5DDF3; border: 1px solid #3366CC;");
 				thumbnail.innerHTML = '<a href="' + result_url + '"><img src="' + thumb_url + '" align="left" height="80" width="110" /></a>';
-				insertNext(result_link, thumbnail);
+
+				result.insertBefore(thumbnail, result.firstChild)
 			}
 		});
 	}
