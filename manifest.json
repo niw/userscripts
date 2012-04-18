@@ -18,7 +18,7 @@
         "http://sfbay.craigslist.org/*roo*"
       ],
       "js": [
-        "craigslistfilter.user.js"
+        "craigslist_sfbay_filter.user.js"
       ]
     },
     {
