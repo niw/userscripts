@@ -31,18 +31,11 @@
     },
     {
       "matches": [
-        "http://hamusoku.com/*"
-      ],
-      "css": [
-        "hamusoku.css"
-      ]
-    },
-    {
-      "matches": [
+        "http://hamusoku.com/*",
         "http://blog.livedoor.jp/dqnplus/*"
       ],
       "css": [
-        "dqnplus.css"
+        "2chmatome.css"
       ]
     }
   ]
