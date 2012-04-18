@@ -9,7 +9,7 @@
         "http://mixi.jp/new_friend_diary.pl*"
       ],
       "js": [
-        "automaticmovingmixi.user.js"
+        "automatic_moving_mixi.user.js"
       ]
     },
     {
