@@ -36,6 +36,14 @@
       "css": [
         "hamusoku.css"
       ]
+    },
+    {
+      "matches": [
+        "http://blog.livedoor.jp/dqnplus/*"
+      ],
+      "css": [
+        "dqnplus.css"
+      ]
     }
   ]
 }
