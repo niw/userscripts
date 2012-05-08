@@ -114,22 +114,25 @@
         status_tag.innerHTML = "No Images"
         inline_tag.innerHTML = content
       } else {
-        var img_tags = xpath(".//img", html)
+        var img_tags = xpath(".//img", html), added_src = {}
         arrayEach(img_tags, function(tag) {
           var parent_tag = tag.parentNode,
               href = parent_tag.getAttribute("href"),
-              alt = tag.getAttribute("alt"),
-              src = tag.getAttribute("src")
-          if(alt && alt.match(/image /) ||
-             src && src.match(/postlets.com|IMG_|trulia.+.jpg/)) {
-            if(href && href.match(/\.(jpg|jpeg|png)$/) && parent_tag.getAttribute("onclick")) {
-              tag.setAttribute("src", href)
-              tag.setAttribute("onmouseover", "")
-            }
+              alt = tag.getAttribute("alt") || "",
+              src = tag.getAttribute("src") || ""
+          if(href && href.match(/\.(jpg|jpeg|png)$/i) && parent_tag.getAttribute("onclick")) {
+            src = href
+            tag.setAttribute("src", href)
+            tag.setAttribute("onmouseover", "")
+          }
+          if(!added_src[src] &&
+              src.match(/.*\.jpe?g/i) &&
+             !src.match(/logo|head|image_small|Harkins_Bill|craig2|agents|members_img|equal|powered|craiglist_images|thumb/i)) {
             tag.setAttribute("height", "120px")
             tag.setAttribute("width", "120px")
             tag.setAttribute("style", "")
             inline_tag.appendChild(tag)
+            added_src[src] = true
           }
         })
         removeTag(status_tag)
