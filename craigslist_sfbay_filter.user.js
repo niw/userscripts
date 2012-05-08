@@ -112,11 +112,11 @@
         status_tag.innerHTML = "No Images"
         inline_tag.innerHTML = content
       } else {
-        var img_tags = xpath(".//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html)
+        var img_tags = xpath(".//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/') or contains(@src, 'IMG_')]", html)
         arrayEach(img_tags, function(tag) {
           var parent_tag = tag.parentNode,
               href = parent_tag.getAttribute("href")
-          if(href && href.match(/\.(jpg|jpeg|png)$/)) {
+          if(href && parent_tag["onclick"] && href.match(/\.(jpg|jpeg|png)$/)) {
             tag.setAttribute("src", href)
           }
           tag.setAttribute("height", "120px")
