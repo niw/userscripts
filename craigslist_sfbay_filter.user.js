@@ -13,9 +13,9 @@
   var
   // exclude keywords in regular expression (examples)
   EXCLUDE_TITLE_KEYWORDS     = /(sunset|ingleside|tenderloin|excelsior)/i,
-  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties)/gi,
+  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy)/gi,
   // highlighted keywords in regular expression (examples)
-  HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking)/gi,
+  HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking|garage)/gi,
   // range of budget
   MAX_RATE = 3500,
   MIN_RATE = 1000,
