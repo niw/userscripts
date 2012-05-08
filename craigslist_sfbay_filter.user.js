@@ -46,7 +46,7 @@
   xmlHttpRequest = function(option) {
     var xmlhttp = new XMLHttpRequest()
     xmlhttp.onreadystatechange = function() {
-      if(xmlhttp.readyState == 4 && option['onload']) {
+      if(xmlhttp.readyState === 4 && option['onload']) {
         option['onload'].call(this, xmlhttp)
       }
     }
@@ -108,7 +108,7 @@
       var inline_tag = document.createElement("div")
       inline_tag.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;")
 
-      if(xpath(".//img", html).length == 0) {
+      if(xpath(".//img", html).length === 0) {
         status_tag.innerHTML = "No Images"
         inline_tag.innerHTML = content
       } else {
