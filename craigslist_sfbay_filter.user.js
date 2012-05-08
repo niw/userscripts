@@ -112,8 +112,13 @@
         status_tag.innerHTML = "No Images"
         inline_tag.innerHTML = content
       } else {
-        var img_tags = xpath(".//table//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html)
+        var img_tags = xpath(".//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/')]", html)
         arrayEach(img_tags, function(tag) {
+          var parent_tag = tag.parentNode,
+              href = parent_tag.getAttribute("href")
+          if(href && href.match(/\.(jpg|jpeg|png)$/)) {
+            tag.setAttribute("src", href)
+          }
           tag.setAttribute("height", "120px")
           tag.setAttribute("width", "120px")
           tag.setAttribute("style", "")
