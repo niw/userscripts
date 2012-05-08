@@ -106,23 +106,31 @@
       }
 
       var inline_tag = document.createElement("div")
-      inline_tag.setAttribute("style", "margin-left: 50px; background: #eee; padding: 2px; font-size: 10px; font-family: sans-serif;")
+      inline_tag.setAttribute("style",
+        "margin-left: 50px; background: #eee; padding: 2px;" +
+        "font-size: 10px; font-family: sans-serif;")
 
       if(xpath(".//img", html).length === 0) {
         status_tag.innerHTML = "No Images"
         inline_tag.innerHTML = content
       } else {
-        var img_tags = xpath(".//img[contains(@alt, 'image ') or contains(@src, 'http://www.postlets.com/create/photos/') or contains(@src, 'IMG_')]", html)
+        var img_tags = xpath(".//img", html)
         arrayEach(img_tags, function(tag) {
           var parent_tag = tag.parentNode,
-              href = parent_tag.getAttribute("href")
-          if(href && parent_tag["onclick"] && href.match(/\.(jpg|jpeg|png)$/)) {
-            tag.setAttribute("src", href)
+              href = parent_tag.getAttribute("href"),
+              alt = tag.getAttribute("alt"),
+              src = tag.getAttribute("src")
+          if(alt && alt.match(/image /) ||
+             src && src.match(/postlets.com|IMG_|trulia.+.jpg/)) {
+            if(href && href.match(/\.(jpg|jpeg|png)$/) && parent_tag.getAttribute("onclick")) {
+              tag.setAttribute("src", href)
+              tag.setAttribute("onmouseover", "")
+            }
+            tag.setAttribute("height", "120px")
+            tag.setAttribute("width", "120px")
+            tag.setAttribute("style", "")
+            inline_tag.appendChild(tag)
           }
-          tag.setAttribute("height", "120px")
-          tag.setAttribute("width", "120px")
-          tag.setAttribute("style", "")
-          inline_tag.appendChild(tag)
         })
         removeTag(status_tag)
       }
