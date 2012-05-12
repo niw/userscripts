@@ -15,7 +15,9 @@
     {
       "matches": [
         "http://sfbay.craigslist.org/*apa*",
-        "http://sfbay.craigslist.org/*roo*"
+        "http://sfbay.craigslist.org/*roo*",
+        "http://sfbay.craigslist.org/*sub*",
+        "http://sfbay.craigslist.org/*hhh*"
       ],
       "js": [
         "craigslist_sfbay_filter.user.js"

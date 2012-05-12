@@ -5,6 +5,8 @@
 // @description    Filtering the reuslt of Craigslist
 // @include        http://sfbay.craigslist.org/*apa*
 // @include        http://sfbay.craigslist.org/*roo*
+// @include        http://sfbay.craigslist.org/*sub*
+// @include        http://sfbay.craigslist.org/*hhh*
 // ==/UserScript==
 
 !function() {
