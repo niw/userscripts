@@ -15,11 +15,13 @@
   var
   // exclude keywords in regular expression (examples)
   EXCLUDE_TITLE_KEYWORDS     = /(sunset|ingleside|tenderloin|excelsior)/i,
-  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy)/gi,
+  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy|421-4333|301 Executive|965 Sutter|1489 Webster)/gi,
+  EXCLUDE_IMAGE_KEYWORDS     = /(logo|head|image_small|Harkins_Bill|craig2|agents|members_img|equal|powered|craiglist_images|thumb|gary|sonya)/i,
+  MALWARE_KEYWORDS           = /berendtproperties.com/i,
   // highlighted keywords in regular expression (examples)
   HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking|garage)/gi,
   // range of budget
-  MAX_RATE = 3500,
+  MAX_RATE = 5000,
   MIN_RATE = 1000,
 
   arrayEach = function(a, f) {
@@ -94,6 +96,12 @@
     var line_tag = anchor_tag.parentNode,
         status_tag = addStatusTag(anchor_tag, "Loading...")
     xmlHttpRequest({method: "GET", url: anchor_tag.getAttribute("href"), onload: function(http) {
+      if(http.responseText && http.responseText.match(MALWARE_KEYWORDS)) {
+        status_tag.innerHTML = "MALWARE"
+        strikeTag(line_tag)
+        return
+      }
+
       var html = document.createElement("div")
       html.innerHTML = http.responseText
 
@@ -122,14 +130,12 @@
               href = parent_tag.getAttribute("href"),
               alt = tag.getAttribute("alt") || "",
               src = tag.getAttribute("src") || ""
-          if(href && href.match(/\.(jpg|jpeg|png)$/i) && parent_tag.getAttribute("onclick")) {
+          if(href && href.match(/\.(jpg|jpeg|png)$/i) && !href.match(/photobucket.com/)) {
             src = href
             tag.setAttribute("src", href)
             tag.setAttribute("onmouseover", "")
           }
-          if(!added_src[src] &&
-              src.match(/.*\.jpe?g/i) &&
-             !src.match(/logo|head|image_small|Harkins_Bill|craig2|agents|members_img|equal|powered|craiglist_images|thumb/i)) {
+          if(!added_src[src] && src.match(/.*\.jpe?g/i) && !src.match(EXCLUDE_IMAGE_KEYWORDS)) {
             tag.setAttribute("height", "120px")
             tag.setAttribute("width", "120px")
             tag.setAttribute("style", "")
