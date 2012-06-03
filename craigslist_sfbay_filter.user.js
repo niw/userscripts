@@ -18,6 +18,7 @@
   EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy|421-4333|301 Executive|965 Sutter|1489 Webster)/gi,
   EXCLUDE_IMAGE_KEYWORDS     = /(logo|head|image_small|Harkins_Bill|craig2|agents|members_img|equal|powered|craiglist_images|thumb|gary|sonya)/i,
   MALWARE_KEYWORDS           = /berendtproperties.com/i,
+  FLAGGED                    = /this posting has been flagged for ([^\.]+)/i,
   // highlighted keywords in regular expression (examples)
   HIGHLIGHT_CONTENT_KEYWORDS = /(washer|dryer|in unit|w\/d|parking|garage)/gi,
   // range of budget
@@ -96,14 +97,20 @@
     var line_tag = anchor_tag.parentNode,
         status_tag = addStatusTag(anchor_tag, "Loading...")
     xmlHttpRequest({method: "GET", url: anchor_tag.getAttribute("href"), onload: function(http) {
-      if(http.responseText && http.responseText.match(MALWARE_KEYWORDS)) {
+      var text = http.responseText
+      if(text.match(MALWARE_KEYWORDS)) {
         status_tag.innerHTML = "MALWARE"
+        strikeTag(line_tag)
+        return
+      }
+      if(m = text.match(FLAGGED)) {
+        status_tag.innerHTML = m[1]
         strikeTag(line_tag)
         return
       }
 
       var html = document.createElement("div")
-      html.innerHTML = http.responseText
+      html.innerHTML = text
 
       var content = getText(xpath(".//div[@id='userbody']", html)), m
       if(m = content.match(EXCLUDE_CONTENT_KEYWORDS)) {
