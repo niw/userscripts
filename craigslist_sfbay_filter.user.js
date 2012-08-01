@@ -15,7 +15,7 @@
   var
   // exclude keywords in regular expression (examples)
   EXCLUDE_TITLE_KEYWORDS     = /(sunset|ingleside|tenderloin|excelsior)/i,
-  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy|421-4333|301 Executive|965 Sutter|1489 Webster)/gi,
+  EXCLUDE_CONTENT_KEYWORDS   = /(TMS333|3333|Redstone Properties|Triniy|421-4333|301 Executive|965 Sutter|1489 Webster|1200 Ocean Avenue)/gi,
   EXCLUDE_IMAGE_KEYWORDS     = /(logo|head|image_small|Harkins_Bill|craig2|agents|members_img|equal|powered|craiglist_images|thumb|gary|sonya)/i,
   MALWARE_KEYWORDS           = /berendtproperties.com/i,
   FLAGGED                    = /this posting has been flagged for ([^\.]+)/i,
